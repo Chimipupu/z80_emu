@@ -13,19 +13,21 @@
 
 void z80_emu_init(void)
 {
-    // TODO:
     z80_cpu_init();
 }
 
 void z80_emu_main(void)
 {
-    // TODO:
+    // while (1)
+    {
+        z80_cpu_main();
+    }
 }
 
 int main(int argc, char **argv)
 {
     z80_emu_init();
-    printf("Z80 Emu by ちみ/Chimi(https://github.com/Chimipupu)\n");
+    printf("Z80 Emu by Chimi(https://github.com/Chimipupu)\n");
     z80_emu_main();
 
     return 0;

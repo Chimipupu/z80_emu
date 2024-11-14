@@ -1,6 +1,21 @@
 # Z80エミュレータ(開発中)
 CでZ80のCPUをエミュレート👩‍💻
 
+## 実行
+
+### Linux環境
+
+```shell
+chmod +x make.sh
+./make.sh
+```
+
+### Windows環境
+
+```shell
+bash make.sh
+```
+
 ## 実装状況
 **凡例(✅完了、🆗実装済み、🚩TODO、❌TBD)**
 

@@ -4,9 +4,10 @@
 # 実行ファイルの名前とディレクトリ設定
 TARGET_NAME = z80_emu
 SRC_DIR = src
-OBJ_DIR = build/obj
-BIN_DIR = build/bin
-EXEC_FILE = build/$(TARGET_NAME).exe  # 実行ファイルのパスを指定
+BUILD_DIR = build
+OBJ_DIR = $(BUILD_DIR)/obj
+BIN_DIR = $(BUILD_DIR)/bin
+EXEC_FILE = $(BUILD_DIR)/$(TARGET_NAME)
 
 # 出力ファイルのパス
 ELF_FILE = $(BIN_DIR)/$(TARGET_NAME).elf
@@ -57,5 +58,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 # クリーンアップ
 clean:
-	@rm -rf $(OBJ_DIR) $(BIN_DIR)
+	# @rm -rf $(OBJ_DIR) $(BIN_DIR)
+	@rm -rf $(BUILD_DIR)
 	@echo "Cleaned up all generated files."

@@ -9,6 +9,8 @@
  * 
  */
 
+#include "z80_cpu.h"
+
 void z80_cpu_init(void)
 {
     // TODO:

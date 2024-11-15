@@ -3,6 +3,8 @@
 LOGFILE=make_log.txt
 EXEC=z80_emu
 
+rm -f "$LOGFILE"
+
 make clean
 make -j4 > "$LOGFILE" 2>&1
 
@@ -13,5 +15,3 @@ else
     echo "Build failed. Displaying error log:"
     cat "$LOGFILE"
 fi
-
-# rm -f "$LOGFILE"

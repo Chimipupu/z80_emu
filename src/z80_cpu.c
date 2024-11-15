@@ -9,13 +9,17 @@
  * 
  */
 
+#include "z80_instr.h"
+#include "z80_mem.h"
 #include "z80_cpu.h"
 
-z80_reg_t g_cpu_reg;
+extern uint8_t g_rom[__Z80_MEM_ROM_SIZE__];
+extern uint8_t g_ram[__Z80_MEM_RAM_SIZE__];
+z80_t g_z80;
 
 static void reg_init(void);
-static void fetch_instr(void);
-static void decode_instr(void);
+static uint8_t fetch_instr(void);
+static void decode_instr(uint8_t intsr);
 static void exec_instr(void);
 static void dbg_cpu_print(const z80_reg_t *p_reg);
 
@@ -44,55 +48,65 @@ static void dbg_cpu_print(const z80_reg_t *p_reg)
 static void reg_init(void)
 {
     // ぺアレジスタ(AF,BC,DE,HL)
-    g_cpu_reg.af.word = 0x00;
-    g_cpu_reg.bc.word = 0x00;
-    g_cpu_reg.de.word = 0x00;
-    g_cpu_reg.hl.word = 0x00;
+    g_z80.reg.af.word = 0x00;
+    g_z80.reg.bc.word = 0x00;
+    g_z80.reg.de.word = 0x00;
+    g_z80.reg.hl.word = 0x00;
 
     // 裏レジスタ(AF',BC',DE',HL')
-    g_cpu_reg.af_s.word = 0x00;
-    g_cpu_reg.bc_s.word = 0x00;
-    g_cpu_reg.de_s.word = 0x00;
-    g_cpu_reg.hl_s.word = 0x00;
+    g_z80.reg.af_s.word = 0x00;
+    g_z80.reg.bc_s.word = 0x00;
+    g_z80.reg.de_s.word = 0x00;
+    g_z80.reg.hl_s.word = 0x00;
 
     // インデックスレジスタ(IX,IY)
-    g_cpu_reg.ix = 0x00;
-    g_cpu_reg.iy = 0x00;
+    g_z80.reg.ix = 0x00;
+    g_z80.reg.iy = 0x00;
 
     // I,R
-    g_cpu_reg.i = 0x00;
-    g_cpu_reg.r = 0x00;
+    g_z80.reg.i = 0x00;
+    g_z80.reg.r = 0x00;
 
     // PC,SP
-    g_cpu_reg.pc = 0x00;
-    g_cpu_reg.sp = 0xFF;
+    g_z80.reg.pc = 0x00;
+    g_z80.reg.sp = 0xFF;
+
+    // ROM, RAM
+    g_z80.p_rom = &g_rom[0];
+    g_z80.p_ram = &g_ram[0];
+
 }
 
-static void fetch_instr(void)
+static uint8_t fetch_instr(void)
 {
-    // TODO:
+    uint8_t intsr = *g_z80.p_rom;
+    g_z80.p_rom++;
+    g_z80.pri_fetch = *g_z80.p_rom;
+    g_z80.p_rom++;
+
+    return intsr;
 }
 
-static void decode_instr(void)
+static void decode_instr(uint8_t intsr)
 {
-    // TODO:
+    z80_intr_decode(g_z80, intsr);
 }
 
 static void exec_instr(void)
 {
-    // TODO:
+    z80_intr_exec(g_z80);
 }
 
 void z80_cpu_init(void)
 {
-    // TODO:
+    reg_init();
     z80_mem_init();
 }
 
 void z80_cpu_main(void)
 {
-    fetch_instr();
-    decode_instr();
+    uint8_t instr = fetch_instr();
+    decode_instr(instr);
     exec_instr();
-    dbg_cpu_print(&g_cpu_reg);
+    dbg_cpu_print(&g_z80.reg);
 }

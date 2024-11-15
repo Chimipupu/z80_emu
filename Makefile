@@ -58,6 +58,5 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 # クリーンアップ
 clean:
-	# @rm -rf $(OBJ_DIR) $(BIN_DIR)
 	@rm -rf $(BUILD_DIR)
 	@echo "Cleaned up all generated files."

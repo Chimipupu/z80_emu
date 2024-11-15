@@ -11,11 +11,8 @@
 
 #include "z80_mem.h"
 
-uint8_t g_rom[__Z80_MEM_ROM_SIZE__] = {0};
-uint8_t g_ram[__Z80_MEM_RAM_SIZE__] = {0};
-
-void z80_mem_init(void)
+void z80_mem_init(uint8_t *p_rom, uint8_t *p_ram)
 {
-    memset(&g_rom[0], 0xFF, sizeof(g_rom));
-    memset(&g_ram[0], 0xFF, sizeof(g_ram));
+    memset(p_rom, 0xFF, __MEM_ROM_SIZE__);
+    memset(p_ram, 0xFF, __MEM_RAM_SIZE__);
 }

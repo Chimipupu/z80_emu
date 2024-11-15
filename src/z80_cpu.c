@@ -13,14 +13,12 @@
 #include "z80_mem.h"
 #include "z80_cpu.h"
 
-extern uint8_t g_rom[__Z80_MEM_ROM_SIZE__];
-extern uint8_t g_ram[__Z80_MEM_RAM_SIZE__];
+extern uint8_t g_rom[__MEM_ROM_SIZE__];
+extern uint8_t g_ram[__MEM_RAM_SIZE__];
 z80_t g_z80;
 
 static void reg_init(void);
 static uint8_t fetch_instr(void);
-static void decode_instr(uint8_t intsr);
-static void exec_instr(void);
 static void dbg_cpu_print(const z80_reg_t *p_reg);
 
 static void dbg_cpu_print(const z80_reg_t *p_reg)
@@ -68,45 +66,26 @@ static void reg_init(void)
     g_z80.reg.r = 0x00;
 
     // PC,SP
-    g_z80.reg.pc = 0x00;
-    g_z80.reg.sp = 0xFF;
-
-    // ROM, RAM
-    g_z80.p_rom = &g_rom[0];
-    g_z80.p_ram = &g_ram[0];
-
+    g_z80.reg.pc = 0x0000;
+    g_z80.reg.sp = 0xFFFF;
 }
 
 static uint8_t fetch_instr(void)
 {
-    uint8_t intsr = *g_z80.p_rom;
-    g_z80.p_rom++;
-    g_z80.pri_fetch = *g_z80.p_rom;
-    g_z80.p_rom++;
-
+    uint8_t intsr = g_z80.rom[g_z80.reg.pc];
+    g_z80.reg.pc = (g_z80.reg.pc + 1) % __MEM_ROM_SIZE__;
     return intsr;
-}
-
-static void decode_instr(uint8_t intsr)
-{
-    z80_intr_decode(g_z80, intsr);
-}
-
-static void exec_instr(void)
-{
-    z80_intr_exec(g_z80);
 }
 
 void z80_cpu_init(void)
 {
     reg_init();
-    z80_mem_init();
+    z80_mem_init(&g_z80.rom[0], &g_z80.ram[0]);
 }
 
 void z80_cpu_main(void)
 {
     uint8_t instr = fetch_instr();
-    decode_instr(instr);
-    exec_instr();
+    z80_decode_exec(g_z80, instr);
     dbg_cpu_print(&g_z80.reg);
 }

@@ -25,7 +25,6 @@
 #define OPCODE_INI     0xEDA2  // INI
 #define OPCODE_INIR    0xEDB2  // INIR
 
-void z80_intr_decode(z80_t z80, uint8_t instr);
-void z80_intr_exec(z80_t z80);
+void z80_decode_exec(z80_t z80, uint8_t instr);
 
 #endif /* Z80_INSTR_H */

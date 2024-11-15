@@ -60,17 +60,16 @@ static void ini(z80_t z80)
 
 static void inir(z80_t z80)
 {
-    z80.halt_flag = TRUE;
+    while (z80.reg.bc.high > 0)
+    {
+        indr(z80);
+    }
 }
 
-void z80_intr_decode(z80_t z80, uint8_t instr)
+void z80_decode_exec(z80_t z80, uint8_t instr)
 {
     z80.instr.high = instr;
-    z80.instr.low = z80.pri_fetch;
-}
 
-void z80_intr_exec(z80_t z80)
-{
     switch (z80.instr.word)
     {
         case OPCODE_HALT:
@@ -90,7 +89,7 @@ void z80_intr_exec(z80_t z80)
             break;
 
         case OPCODE_INIR:
-            ini(z80);
+            inir(z80);
             break;
 
         case OPCODE_NOP:

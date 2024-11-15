@@ -16,6 +16,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "z80_mem.h"
+
 typedef struct {
     // レジスタペア(AF,BC,DE,HL)
     // 裏レジスタ(AF',BC',DE',HL')
@@ -44,11 +46,10 @@ typedef struct {
         };
         uint16_t word;
     } instr;
-    uint8_t pri_fetch;
     uint8_t cycle;
     uint8_t halt_flag;
-    uint8_t *p_rom;
-    uint8_t *p_ram;
+    uint8_t rom[__MEM_ROM_SIZE__];
+    uint8_t ram[__MEM_RAM_SIZE__];
 } z80_t;
 
 #ifndef FALSE

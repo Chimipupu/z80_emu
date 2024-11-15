@@ -16,9 +16,9 @@
 #include <stdint.h>
 #include <string.h>
 
-#define __Z80_MEM_ROM_SIZE__    8192
-#define __Z80_MEM_RAM_SIZE__    8192
+#define __MEM_ROM_SIZE__    8192
+#define __MEM_RAM_SIZE__    8192
 
-void z80_mem_init(void);
+void z80_mem_init(uint8_t *p_rom, uint8_t *p_ram);
 
 #endif /* Z80_MEM_H */

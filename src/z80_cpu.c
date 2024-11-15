@@ -34,10 +34,9 @@ static void dbg_cpu_print(const z80_reg_t *p_reg)
     printf("HL': 0x%04X (H': 0x%02X, L': 0x%02X)\n", p_reg->hl_s.word, p_reg->hl_s.high, p_reg->hl_s.low);
 
     printf("I : 0x%02X\n", p_reg->i);
-    printf("R : 0x%02X\n", p_reg->r);
+    // printf("R : 0x%02X\n", p_reg->r);
 
-    printf("IX : 0x%04X\n", p_reg->ix);
-    printf("IY : 0x%04X\n", p_reg->iy);
+    printf("IX : 0x%04X IY : 0x%04X\n", p_reg->ix, p_reg->iy);
 
     printf("PC : 0x%04X\n", p_reg->pc);
     printf("SP : 0x%04X\n", p_reg->sp);
@@ -88,4 +87,9 @@ void z80_cpu_main(void)
     uint8_t instr = fetch_instr();
     z80_decode_exec(g_z80, instr);
     dbg_cpu_print(&g_z80.reg);
+    for(g_z80.cycle; g_z80.cycle == 0; g_z80.cycle--)
+    {
+        // TODO:CPUのサイクル待ち処理
+        asm volatile("nop");
+    }
 }

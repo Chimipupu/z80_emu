@@ -9,6 +9,7 @@
  * 
  */
 
+#include <unistd.h>
 #include "z80_emu.h"
 
 void z80_emu_init(void)
@@ -18,9 +19,11 @@ void z80_emu_init(void)
 
 void z80_emu_main(void)
 {
-    // while (1)
+    while (1)
     {
+        // TODO: CPUにクロック供給
         z80_cpu_main();
+        sleep(1);
     }
 }
 
@@ -28,7 +31,11 @@ int main(int argc, char **argv)
 {
     z80_emu_init();
     printf("Z80 Emu by Chimi(https://github.com/Chimipupu)\n");
-    z80_emu_main();
+
+    while (1)
+    {
+        z80_emu_main();
+    }
 
     return 0;
 }

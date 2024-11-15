@@ -11,7 +11,7 @@
 
 #include "z80_instr.h"
 
-static void nop(void);
+static void nop(z80_t z80);
 static void halt(z80_t z80);
 static void ind(z80_t z80);
 static void indr(z80_t z80);
@@ -19,9 +19,10 @@ static void ini(z80_t z80);
 static void inir(z80_t z80);
 
 // NOP(なにもしない, 1サイクル)
-static void nop(void)
+static void nop(z80_t z80)
 {
     asm volatile ("nop");
+    z80.cycle = 1;
 }
 
 // HALT (CPU停止, 4サイクル)
@@ -94,7 +95,7 @@ void z80_decode_exec(z80_t z80, uint8_t instr)
 
         case OPCODE_NOP:
         default:
-            nop();
+            nop(z80);
             break;
     }
 }
